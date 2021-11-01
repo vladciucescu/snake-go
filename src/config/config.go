@@ -22,6 +22,12 @@ func GetBoardDimensions() (rows, columns int) {
 	}
 	rows = props.GetInt("rows", defaultRows)
 	columns = props.GetInt("column", defaultColumns)
+	if rows < 2 {
+		rows = defaultRows
+	}
+	if columns < 2 {
+		columns = defaultColumns
+	}
 	return rows, columns
 }
 

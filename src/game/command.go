@@ -19,7 +19,6 @@ var menuOptions = map[command]string{
 	left:    "left",
 	right:   "right",
 	exit:    "exit",
-	invalid: "",
 }
 
 func getCommand(text string) command {

@@ -9,7 +9,7 @@ import (
 	"text/tabwriter"
 )
 
-var tw = tabwriter.NewWriter(os.Stdout, 1, 1, 1, ' ', tabwriter.Debug)
+var tw = tabwriter.NewWriter(os.Stdout, 1, 0, 1, ' ', tabwriter.Debug)
 
 func Run() {
 	showMenu()
@@ -70,13 +70,18 @@ func parseCommand(text string) (cmd command, arg int) {
 
 func printBoard() {
 	board := getBoard()
+	columns := "\t"
 	for column := 1; column <= board.columns; column++ {
-		_, _ = fmt.Fprint(tw, column)
+		columns += strconv.Itoa(column) + "\t"
 	}
+	columns += "\n"
+	_, _ = fmt.Fprint(tw, columns)
 	for rowNr, row := range board.objects {
 		rowSymbols := Map(row, boardObject.String)
-		_, _ = fmt.Fprintf(tw, "%d %v", rowNr, strings.Join(rowSymbols, " "))
+		rowString := strings.Join(rowSymbols, "	") + "\t\n"
+		_, _ = fmt.Fprintf(tw, "%d\t%v", rowNr, rowString)
 	}
+	_ = tw.Flush()
 }
 
 func Map(vs []boardObject, f func(object boardObject) string) []string {
