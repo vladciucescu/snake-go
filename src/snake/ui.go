@@ -1,10 +1,11 @@
-package ui
+package snake
 
 import (
 	"bufio"
 	"fmt"
 	"os"
-	controller "snake/src/controller"
+	"strconv"
+	"strings"
 )
 
 func Run() {
@@ -20,8 +21,8 @@ func showMenu() {
 }
 
 func drawObjects() {
-	controller.PlaceSnake()
-	controller.PlaceApple()
+	placeSnake()
+	placeApple()
 	printBoard()
 }
 
@@ -33,12 +34,11 @@ func processCommands() {
 	const goodbyeMessage = "We are sorry to see you go.."
 	const invalidCommand = "Invalid command, please try again."
 	reader := bufio.NewReader(os.Stdin)
-
 loop:
 	for {
 		fmt.Print("Command: ")
 		text, _ := reader.ReadString('\n')
-		command, _ := parseCommand(text)
+		command, arg := parseCommand(text)
 
 		switch command {
 		case exit:
@@ -47,7 +47,7 @@ loop:
 		case invalid:
 			fmt.Println(invalidCommand)
 			continue
-		default: panic("Unknown command")
+		default: executeCommand(command, arg)
 		}
 	}
 }
@@ -55,6 +55,15 @@ loop:
 // parseCommand parses the given text and returns a command and an argument to use with that command.
 // If no valid argument was found, 0 is returned
 func parseCommand(text string) (cmd command, arg int) {
-	return exit, 0
+	trimmed := strings.TrimSpace(text)
+	split := strings.Split(trimmed, " ")
+	if len(split) < 1 {
+		return invalid, 0
+	}
+	cmd = getCommand(split[0])
+	if len(split) > 1 {
+		arg, _ = strconv.Atoi(split[1])
+	}
+	return cmd, arg
 }
 

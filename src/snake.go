@@ -1,7 +1,9 @@
 package main
 
-import "snake/src/ui"
+import (
+	"snake/src/snake"
+)
 
 func main() {
-	ui.Run()
+	snake.Run()
 }
