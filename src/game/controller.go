@@ -1,4 +1,4 @@
-package snake
+package game
 
 import "snake/src/config"
 

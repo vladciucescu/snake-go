@@ -1,4 +1,4 @@
-package snake
+package game
 
 type boardObject int
 

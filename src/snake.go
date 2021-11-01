@@ -1,9 +1,9 @@
 package main
 
 import (
-	"snake/src/snake"
+	"snake/src/game"
 )
 
 func main() {
-	snake.Run()
+	game.Run()
 }
