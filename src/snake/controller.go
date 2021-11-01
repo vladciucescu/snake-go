@@ -1,7 +1,15 @@
 package snake
 
-func init() {
+import "snake/src/config"
 
+var snakeBoard board
+
+func init() {
+	snakeBoard = newBoard(config.GetBoardDimensions())
+}
+
+func getBoard() board {
+	return snakeBoard
 }
 
 func placeSnake() {

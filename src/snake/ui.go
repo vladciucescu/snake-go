@@ -6,7 +6,10 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"text/tabwriter"
 )
+
+var tw = tabwriter.NewWriter(os.Stdout, 1, 1, 1, ' ', tabwriter.Debug)
 
 func Run() {
 	showMenu()
@@ -26,10 +29,6 @@ func drawObjects() {
 	printBoard()
 }
 
-func printBoard() {
-
-}
-
 func processCommands() {
 	const goodbyeMessage = "We are sorry to see you go.."
 	const invalidCommand = "Invalid command, please try again."
@@ -47,8 +46,10 @@ loop:
 		case invalid:
 			fmt.Println(invalidCommand)
 			continue
-		default: executeCommand(command, arg)
+		default:
+			executeCommand(command, arg)
 		}
+		printBoard()
 	}
 }
 
@@ -67,3 +68,21 @@ func parseCommand(text string) (cmd command, arg int) {
 	return cmd, arg
 }
 
+func printBoard() {
+	board := getBoard()
+	for column := 1; column <= board.columns; column++ {
+		_, _ = fmt.Fprint(tw, column)
+	}
+	for rowNr, row := range board.objects {
+		rowSymbols := Map(row, boardObject.String)
+		_, _ = fmt.Fprintf(tw, "%d %v", rowNr, strings.Join(rowSymbols, " "))
+	}
+}
+
+func Map(vs []boardObject, f func(object boardObject) string) []string {
+	vsm := make([]string, len(vs))
+	for i, v := range vs {
+		vsm[i] = f(v)
+	}
+	return vsm
+}
