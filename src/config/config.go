@@ -21,7 +21,7 @@ func GetBoardDimensions() (rows, columns int) {
 		return defaultRows, defaultColumns
 	}
 	rows = props.GetInt("rows", defaultRows)
-	columns = props.GetInt("column", defaultColumns)
+	columns = props.GetInt("columns", defaultColumns)
 	if rows < 2 {
 		rows = defaultRows
 	}
@@ -35,7 +35,7 @@ func GetStartingPosition() (row, column int) {
 	if props == nil {
 		return defaultRows, defaultColumns
 	}
-	row = props.GetInt("rows", defaultRows)
-	column = props.GetInt("column", defaultColumns)
+	row = props.GetInt("startRow", defaultStartingRow)
+	column = props.GetInt("startColumn", defaultStartingColumn)
 	return row, column
 }
