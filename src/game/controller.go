@@ -2,19 +2,18 @@ package game
 
 import (
 	"log"
+	"math/rand"
 	"snake/src/config"
+	"time"
 )
 
 var snakeBoard board
 var snakey *snake
+var random = rand.New(rand.NewSource(time.Now().UnixNano()))
 
 func init() {
 	snakeBoard = newBoard(config.GetBoardDimensions())
 	snakey = newSnake(config.GetStartingPosition())
-}
-
-func getBoard() board {
-	return snakeBoard
 }
 
 func placeSnake() {
@@ -34,7 +33,33 @@ func mustHaveValidInitialPosition(snakey *snake) {
 }
 
 func placeApple() {
+	pos, _ := getNewApplePosition(snakeBoard)
+	snakeBoard.placeObject(pos, apple)
+}
 
+func getNewApplePosition(b board) (position, bool) {
+	emptyPositions := b.getEmptyPositions()
+	size := len(emptyPositions)
+	var tries int
+	index := random.Intn(size)
+	for hasAppleNeighbor(snakeBoard, emptyPositions[index]) && tries<size {
+		tries++
+		index = random.Intn(size)
+	}
+	if tries == size {
+		return position{}, false
+	}
+	return emptyPositions[index], true
+}
+
+func hasAppleNeighbor(b board, p position) bool {
+	neighbors := b.getNeighbors(p)
+	for _, pos := range neighbors {
+		if b.getObject(pos) == apple {
+			return true
+		}
+	}
+	return false
 }
 
 func executeCommand(cmd command, arg int) {

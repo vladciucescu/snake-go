@@ -69,6 +69,7 @@ func parseCommand(text string) (cmd command, arg int) {
 }
 
 func printBoard() {
+	defer tw.Flush()
 	board := snakeBoard
 	columns := "\t"
 	for column := 1; column <= board.columns; column++ {
@@ -81,7 +82,6 @@ func printBoard() {
 		rowString := strings.Join(rowSymbols, "	") + "\t\n"
 		_, _ = fmt.Fprintf(tw, "%d\t%v", rowNr+1, rowString)
 	}
-	_ = tw.Flush()
 }
 
 func Map(vs []boardObject, f func(object boardObject) string) []string {

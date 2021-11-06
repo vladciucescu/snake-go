@@ -1,35 +1,12 @@
 package game
 
-type direction int
 type position struct {
 	row, column int
 }
 
-const (
-	north direction = iota
-	south
-	west
-	east
-)
-
 type snake struct {
 	direction
 	segments []position
-}
-
-func (d direction) getMoveIndexes() (x, y int) {
-	switch d {
-	case north:
-		return -1, 0
-	case south:
-		return 1, 0
-	case west:
-		return 0, -1
-	case east:
-		return 0, 1
-	default:
-		panic("Invalid direction")
-	}
 }
 
 func newSnake(startingRow, startingColumn int) *snake {

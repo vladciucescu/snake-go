@@ -70,3 +70,31 @@ func (b board) placeObject(pos position, object boardObject) {
 	}
 	b.objects[pos.row][pos.column] = object
 }
+
+func (b board) getEmptyPositions() []position {
+	var res []position
+	for i := 0; i < b.rows; i++ {
+		for j := 0; j < b.columns; j++ {
+			if b.objects[i][j] == empty {
+				res = append(res, position{i, j})
+			}
+		}
+	}
+	return res
+}
+
+func (b board) getNeighbors(p position) []position {
+	var res []position
+	for _, dir := range directions {
+		x, y := dir.getMoveIndexes()
+		neighbor := position{p.row + x, p.column + y}
+		if b.isOnBoard(neighbor) {
+			res = append(res, neighbor)
+		}
+	}
+	return res
+}
+
+func (b board) getObject(pos position) boardObject {
+	return b.objects[pos.row][pos.column]
+}
