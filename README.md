@@ -4,8 +4,7 @@ A console-based version of the beloved [game of Snake](https://www.google.com/se
 ## Play the game
 
 The user can move the snake using the following commands:
-- `move [n]`. This moves the snake `n` squares, in the direction it is currently facing. `move` with no parameters moves the snake by `1` square.
-- `up | right | down | left` changes the snake orientation and moves the snake `1` square in the specified direction.
+- `up | right | down | left [n]` changes the snake orientation and moves the snake `n` square in the specified direction. If no parameter is given, the snake is moved 1 square.
 - When the snake eats an apple, its tail grows by `1 square` and a new apple is added to the game area.
 
 Game stops when the snake eats itself or hits the wall.

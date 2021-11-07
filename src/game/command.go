@@ -3,8 +3,7 @@ package game
 type command int
 
 const (
-	move command = iota
-	up
+	up command = iota
 	down
 	left
 	right
@@ -13,18 +12,15 @@ const (
 )
 
 var menuOptions = map[command]string{
-	move:    "move <n>",
-	up:      "up",
-	down:    "down",
-	left:    "left",
-	right:   "right",
-	exit:    "exit",
+	up:    "up <n>",
+	down:  "down <n>",
+	left:  "left <n>",
+	right: "right <n>",
+	exit:  "exit",
 }
 
 func getCommand(text string) command {
 	switch text {
-	case "move":
-		return move
 	case "up":
 		return up
 	case "down":

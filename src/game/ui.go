@@ -47,7 +47,11 @@ loop:
 			fmt.Println(invalidCommand)
 			continue
 		default:
-			executeCommand(command, arg)
+			gameOver := executeCommand(command, arg)
+			if gameOver {
+				fmt.Println("Game over")
+				break loop
+			}
 		}
 		printBoard()
 	}

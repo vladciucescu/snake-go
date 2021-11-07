@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"log"
 	"math/rand"
 	"snake/src/config"
@@ -42,7 +43,7 @@ func getNewApplePosition(b board) (position, bool) {
 	size := len(emptyPositions)
 	var tries int
 	index := random.Intn(size)
-	for hasAppleNeighbor(snakeBoard, emptyPositions[index]) && tries<size {
+	for hasAppleNeighbor(snakeBoard, emptyPositions[index]) && tries < size {
 		tries++
 		index = random.Intn(size)
 	}
@@ -62,6 +63,49 @@ func hasAppleNeighbor(b board, p position) bool {
 	return false
 }
 
-func executeCommand(cmd command, arg int) {
+func executeCommand(cmd command, arg int) (gameOver bool) {
+	switch cmd {
+	case up:
+		snakey.direction = north
+	case down:
+		snakey.direction = south
+	case left:
+		snakey.direction = west
+	case right:
+		snakey.direction = east
+	}
+	if arg > 0 {
+		return advanceSnake(arg)
+	} else {
+		return advanceSnake(1)
+	}
+}
 
+func advanceSnake(steps int) (gameOver bool) {
+	for i := 0; i < steps; i++ {
+		if isGameOver(snakeBoard, snakey) {
+			return true
+		}
+		willEatApple := snakeBoard.getObject(snakey.getNextHeadPos()) == apple
+		if willEatApple {
+			snakey.growTail()
+			placeApple()
+		}
+		snakey.move()
+		snakeBoard.placeSnake(snakey)
+	}
+	return false
+}
+
+func isGameOver(b board, s *snake) bool {
+	nextPos := s.getNextHeadPos()
+	if !b.isOnBoard(nextPos) {
+		fmt.Println("The snake hit the wall!")
+		return true
+	}
+	if b.getObject(nextPos) == snakeSegment {
+		fmt.Println("The snake ate itself!")
+		return true
+	}
+	return false
 }
